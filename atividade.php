@@ -1,23 +1,51 @@
 <?php
 
-class AcessoSistema
+class Produto
 {
-    private static $totalAcessos = 0;
+    public string $nome;
+    public float $preco;
+    public int $quantidade;
 
-    public function __construct()
+    public function adicionarEstoque(int $qtd): void
     {
-        self::$totalAcessos++;
+        $this->quantidade += $qtd;
     }
 
-    public static function getAcessos()
+    public function removerEstoque(int $qtd): bool
     {
-        return self::$totalAcessos;
+        if ($qtd <= $this->quantidade) {
+            $this->quantidade -= $qtd;
+            return true;
+        }
+
+        return false;
+    }
+
+    public function calcularValorTotal(): float
+    {
+        return $this->preco * $this->quantidade;
     }
 }
 
-$acesso1 = new AcessoSistema();
-$acesso2 = new AcessoSistema();
-$acesso3 = new AcessoSistema();
-$acesso4 = new AcessoSistema();
 
-echo "Total de acessos: " . AcessoSistema::getAcessos();
+
+
+$produto = new Produto();
+
+$produto->nome = "Caderno";
+$produto->preco = 25.50;
+$produto->quantidade = 10;
+
+$produto->adicionarEstoque(5);
+
+if ($produto->removerEstoque(3)) {
+    echo "Produto removido com sucesso!<br>";
+} else {
+    echo "Estoque insuficiente!<br>";
+}
+
+echo "Produto: " . $produto->nome . "<br>";
+echo "Preço: R$ " . $produto->preco . "<br>";
+echo "Quantidade: " . $produto->quantidade . "<br>";
+echo "Valor total do estoque: R$ " . $produto->calcularValorTotal();
+
